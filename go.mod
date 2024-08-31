@@ -1,4 +1,4 @@
-module github.com/cliquebenito/toncenter/v3
+module github.com/cliquebenito/toncenter-v3
 
 go 1.23.0
 
