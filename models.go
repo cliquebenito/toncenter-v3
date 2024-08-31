@@ -80,6 +80,18 @@ type MasterChainInfoStruct struct {
 		} `json:"prev_blocks"`
 	} `json:"first"`
 }
+type BlocksStructParams struct {
+	WorkChain  string `json:"workchain"`
+	Shard      string `json:"shard"`
+	Seqno      string `json:"seqno"`
+	StartUtime string `json:"start_utime"`
+	EndUtime   string `json:"end_utime"`
+	StartLt    string `json:"start_lt"`
+	EndLt      string `json:"end_lt"`
+	Limit      string `json:"limit"`
+	Offset     string `json:"offset"`
+	Sort       string `json:"sort"`
+}
 
 type BlocksStruct struct {
 	Blocks []struct {

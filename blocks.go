@@ -21,15 +21,27 @@ func NewBlock(c *Client) Blocker {
 	}
 }
 
-//func (c *Block) Blocks() (BlocksStruct, error) {
-//	result := BlocksStruct{}
-//	_, err := c.client.resty.R().
-//		SetResult(&result).ForceContentType("application/json").Get(c.client.url)
-//	if err != nil {
-//		return result, fmt.Errorf("Get MasterChainInfo method error: %v", err)
-//	}
-//	return result, err
-//}
+func (c *Block) Blocks(req BlocksStructParams) (BlocksStruct, error) {
+	result := BlocksStruct{}
+
+	_, err := c.client.resty.R().SetQueryParams(map[string]string{
+		req.WorkChain:  req.WorkChain,
+		req.Shard:      req.Shard,
+		req.Seqno:      req.Seqno,
+		req.StartUtime: req.StartUtime,
+		req.EndUtime:   req.EndUtime,
+		req.StartLt:    req.StartLt,
+		req.EndLt:      req.EndLt,
+		req.Limit:      req.Limit,
+		req.Offset:     req.Offset,
+		req.Sort:       req.Sort,
+	}).
+		SetResult(&result).ForceContentType("application/json").Get(BlocksUrl + c.client.apikey)
+	if err != nil {
+		return result, fmt.Errorf("Get MasterChainInfo method error: %v", err)
+	}
+	return result, err
+}
 
 func (c *Block) MasterchainInfo() (MasterChainInfoStruct, error) {
 	result := MasterChainInfoStruct{}
