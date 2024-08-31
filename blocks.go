@@ -6,8 +6,8 @@ import (
 
 type Blocker interface {
 	MasterchainInfo() (MasterChainInfoStruct, error)
-	// Blocks
-	// MasterchainBlockShardState
+	Blocks(req BlocksStructParams) (BlocksStruct, error)
+	MasterchainBlockShardState(seqno string) (MasterChainBlockShardStateStruct, error)
 	// AddressBook
 	// MastherChainBlockShards
 }
@@ -20,25 +20,23 @@ func NewBlock(c *Client) Blocker {
 		client: *c,
 	}
 }
+func (c *Block) MasterchainBlockShardState(seqno string) (MasterChainBlockShardStateStruct, error) {
+	result := MasterChainBlockShardStateStruct{}
+	_, err := c.client.resty.R().SetQueryParam("seqno", seqno).
+		SetResult(&result).ForceContentType("application/json").Get(MasterChainBlockShardState + c.client.apikey)
+	if err != nil {
+		return result, fmt.Errorf("Get MasterChainBlockShardState method error: %v", err)
+	}
+	return result, err
+}
 
 func (c *Block) Blocks(req BlocksStructParams) (BlocksStruct, error) {
 	result := BlocksStruct{}
-
-	_, err := c.client.resty.R().SetQueryParams(map[string]string{
-		req.WorkChain:  req.WorkChain,
-		req.Shard:      req.Shard,
-		req.Seqno:      req.Seqno,
-		req.StartUtime: req.StartUtime,
-		req.EndUtime:   req.EndUtime,
-		req.StartLt:    req.StartLt,
-		req.EndLt:      req.EndLt,
-		req.Limit:      req.Limit,
-		req.Offset:     req.Offset,
-		req.Sort:       req.Sort,
-	}).
+	params := SetParams(req)
+	_, err := c.client.resty.R().SetQueryParamsFromValues(params).
 		SetResult(&result).ForceContentType("application/json").Get(BlocksUrl + c.client.apikey)
 	if err != nil {
-		return result, fmt.Errorf("Get MasterChainInfo method error: %v", err)
+		return result, fmt.Errorf("Get Blocks method error: %v", err)
 	}
 	return result, err
 }
