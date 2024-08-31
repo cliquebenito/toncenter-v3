@@ -13,7 +13,12 @@ type Blocks interface {
 }
 type Block struct {
 	client Client
-	block  Blocks
+}
+
+func NewBlock(c Client) Blocks {
+	return &Block{
+		client: c,
+	}
 }
 
 func (c *Block) MasterchainInfo() (MasterChainInfoStruct, error) {
