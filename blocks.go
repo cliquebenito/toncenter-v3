@@ -15,9 +15,9 @@ type Block struct {
 	client Client
 }
 
-func NewBlock(c Client) Blocks {
+func NewBlock(c *Client) Blocks {
 	return &Block{
-		client: c,
+		client: *c,
 	}
 }
 
