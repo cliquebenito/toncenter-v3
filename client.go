@@ -6,18 +6,18 @@ import (
 )
 
 type Client struct {
-	url   string
-	resty *resty.Client
+	apikey string
+	resty  *resty.Client
 }
 
 func NewClient(apiKey string) *Client {
 
 	return &Client{
-		url:   SetApiKey(apiKey),
-		resty: resty.New(),
+		apikey: SetApiKey(apiKey),
+		resty:  resty.New(),
 	}
 }
 
 func SetApiKey(apiKey string) string {
-	return fmt.Sprint("https://toncenter.com/api/v3/masterchainInfo?api_key=", apiKey)
+	return fmt.Sprint(apiKey)
 }
