@@ -2,12 +2,13 @@ package toncenter
 
 import (
 	"fmt"
+	"strconv"
 )
 
 type Blocker interface {
 	MasterchainInfo() (MasterChainInfoStruct, error)
 	Blocks(req BlocksStructParams) (BlocksStruct, error)
-	MasterchainBlockShardState(seqno string) (MasterChainBlockShardStateStruct, error)
+	MasterchainBlockShardState(seqno int) (MasterChainBlockShardStateStruct, error)
 	// AddressBook
 	// MastherChainBlockShards
 }
@@ -20,9 +21,9 @@ func NewBlock(c *Client) Blocker {
 		client: *c,
 	}
 }
-func (c *Block) MasterchainBlockShardState(seqno string) (MasterChainBlockShardStateStruct, error) {
+func (c *Block) MasterchainBlockShardState(seqno int) (MasterChainBlockShardStateStruct, error) {
 	result := MasterChainBlockShardStateStruct{}
-	_, err := c.client.resty.R().SetQueryParam("seqno", seqno).
+	_, err := c.client.resty.R().SetQueryParam("seqno", strconv.Itoa(seqno)).
 		SetResult(&result).ForceContentType("application/json").Get(MasterChainBlockShardState + c.client.apikey)
 	if err != nil {
 		return result, fmt.Errorf("Get MasterChainBlockShardState method error: %v", err)
