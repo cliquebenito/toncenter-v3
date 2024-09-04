@@ -27,7 +27,7 @@ func (c *Block) MasterchainBlocksShards(seqno int) (MasterChainBlockShardsStruct
 	_, err := c.client.resty.R().SetQueryParam("seqno", strconv.Itoa(seqno)).
 		SetResult(&result).ForceContentType("application/json").Get(MasterChainBlockShards + c.client.apikey)
 	if err != nil {
-		return result, fmt.Errorf("Get AddressBook method error: %v", err)
+		return result, fmt.Errorf("Get MasterchainBlocksShards method error: %v", err)
 	}
 	return result, err
 
@@ -57,14 +57,14 @@ func (c *Block) MasterchainBlockShardState(seqno int) (MasterChainBlockShardStat
 	_, err := c.client.resty.R().SetQueryParam("seqno", strconv.Itoa(seqno)).
 		SetResult(&result).ForceContentType("application/json").Get(MasterChainBlockShardState + c.client.apikey)
 	if err != nil {
-		return result, fmt.Errorf("Get MasterChainBlockShardState method error: %v", err)
+		return result, fmt.Errorf("Get MasterchainBlockShardState method error: %v", err)
 	}
 	return result, err
 }
 
 func (c *Block) Blocks(req BlocksStructParams) (BlocksStruct, error) {
 	result := BlocksStruct{}
-	params := SetParams(req)
+	params := SetBlockParams(req)
 	_, err := c.client.resty.R().SetQueryParamsFromValues(params).
 		SetResult(&result).ForceContentType("application/json").Get(BlocksUrl + c.client.apikey)
 	if err != nil {
@@ -78,7 +78,7 @@ func (c *Block) MasterchainInfo() (MasterChainInfoStruct, error) {
 	_, err := c.client.resty.R().
 		SetResult(&result).ForceContentType("application/json").Get(MasterChainUrl + c.client.apikey)
 	if err != nil {
-		return result, fmt.Errorf("Get MasterChainInfo method error: %v", err)
+		return result, fmt.Errorf("Get MasterchainInfo method error: %v", err)
 	}
 	return result, err
 }

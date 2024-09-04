@@ -1,9 +1,12 @@
 package toncenter
 
-import "net/url"
+import (
+	"net/url"
+	"strconv"
+)
 
-func SetParams(req BlocksStructParams) url.Values {
-	queryParams := url.Values{}
+func SetBlockParams(req BlocksStructParams) url.Values {
+	queryParams := &url.Values{}
 	params := map[string]string{
 		"workchain":   req.WorkChain,
 		"shard":       req.Shard,
@@ -21,10 +24,26 @@ func SetParams(req BlocksStructParams) url.Values {
 			queryParams.Set(key, value)
 		}
 	}
-	return queryParams
+	return *queryParams
+}
+
+func SetParamsTxMasterChain(req TransactionByMasterchainBlockParams) url.Values {
+	queryParams := &url.Values{}
+	params := map[string]string{
+		"seqno":  strconv.Itoa(req.Seqno),
+		"limit":  strconv.Itoa(req.Limit),
+		"offset": strconv.Itoa(req.Offset),
+		"sort":   req.Sort,
+	}
+	for key, value := range params {
+		if value != "" {
+			queryParams.Set(key, value)
+		}
+	}
+	return *queryParams
 }
 func SetParamsTx(req TransactionsParams) url.Values {
-	queryParams := url.Values{}
+	queryParams := &url.Values{}
 	var account, exclude_account string
 	for _, v := range req.Account {
 		account += v
@@ -53,5 +72,5 @@ func SetParamsTx(req TransactionsParams) url.Values {
 			queryParams.Set(key, value)
 		}
 	}
-	return queryParams
+	return *queryParams
 }

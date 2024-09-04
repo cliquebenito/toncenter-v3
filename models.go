@@ -8,6 +8,101 @@ type AddressBookResponse map[string]AddressBookStruct
 //	type TxLastRest struct {
 //		AddressBookResponse `json:"address_book"`
 //	}
+
+type TransactionByMasterchainBlockParams struct {
+	Seqno  int    `json:"seqno" validate:"required"`
+	Limit  int    `json:"limit"`
+	Offset int    `json:"offset"`
+	Sort   string `json:"sort"`
+}
+
+type TransactionByMasterChainBlockStruct struct {
+	Transactions []struct {
+		Account       string `json:"account"`
+		Hash          string `json:"hash"`
+		Lt            string `json:"lt"`
+		Now           int    `json:"now"`
+		OrigStatus    string `json:"orig_status"`
+		EndStatus     string `json:"end_status"`
+		TotalFees     string `json:"total_fees"`
+		PrevTransHash string `json:"prev_trans_hash"`
+		PrevTransLt   string `json:"prev_trans_lt"`
+		Description   string `json:"description"`
+		BlockRef      struct {
+			Workchain int    `json:"workchain"`
+			Shard     string `json:"shard"`
+			Seqno     int    `json:"seqno"`
+		} `json:"block_ref"`
+		InMsg struct {
+			Hash           string `json:"hash"`
+			Source         string `json:"source"`
+			Destination    string `json:"destination"`
+			Value          string `json:"value"`
+			FwdFee         string `json:"fwd_fee"`
+			IhrFee         string `json:"ihr_fee"`
+			CreatedLt      string `json:"created_lt"`
+			CreatedAt      string `json:"created_at"`
+			Opcode         string `json:"opcode"`
+			IhrDisabled    bool   `json:"ihr_disabled"`
+			Bounce         bool   `json:"bounce"`
+			Bounced        bool   `json:"bounced"`
+			ImportFee      string `json:"import_fee"`
+			MessageContent struct {
+				Hash    string `json:"hash"`
+				Body    string `json:"body"`
+				Decoded struct {
+				} `json:"decoded"`
+			} `json:"message_content"`
+			InitState struct {
+				Hash string `json:"hash"`
+				Body string `json:"body"`
+			} `json:"init_state"`
+		} `json:"in_msg"`
+		OutMsgs []struct {
+			Hash           string `json:"hash"`
+			Source         string `json:"source"`
+			Destination    string `json:"destination"`
+			Value          string `json:"value"`
+			FwdFee         string `json:"fwd_fee"`
+			IhrFee         string `json:"ihr_fee"`
+			CreatedLt      string `json:"created_lt"`
+			CreatedAt      string `json:"created_at"`
+			Opcode         string `json:"opcode"`
+			IhrDisabled    bool   `json:"ihr_disabled"`
+			Bounce         bool   `json:"bounce"`
+			Bounced        bool   `json:"bounced"`
+			ImportFee      string `json:"import_fee"`
+			MessageContent struct {
+				Hash    string `json:"hash"`
+				Body    string `json:"body"`
+				Decoded struct {
+				} `json:"decoded"`
+			} `json:"message_content"`
+			InitState struct {
+				Hash string `json:"hash"`
+				Body string `json:"body"`
+			} `json:"init_state"`
+		} `json:"out_msgs"`
+		AccountStateBefore struct {
+			Hash          string `json:"hash"`
+			Balance       string `json:"balance"`
+			AccountStatus string `json:"account_status"`
+			FrozenHash    string `json:"frozen_hash"`
+			CodeHash      string `json:"code_hash"`
+			DataHash      string `json:"data_hash"`
+		} `json:"account_state_before"`
+		AccountStateAfter struct {
+			Hash          string `json:"hash"`
+			Balance       string `json:"balance"`
+			AccountStatus string `json:"account_status"`
+			FrozenHash    string `json:"frozen_hash"`
+			CodeHash      string `json:"code_hash"`
+			DataHash      string `json:"data_hash"`
+		} `json:"account_state_after"`
+		McBlockSeqno int `json:"mc_block_seqno"`
+	} `json:"transactions"`
+	AddressBookResponse `json:"address_book"`
+}
 type TransactionStruct struct {
 	Transactions []struct {
 		Account       string `json:"account"`
@@ -130,7 +225,7 @@ type MasterChainBlockShardsStruct struct {
 	} `json:"blocks"`
 }
 type AddressBookParams struct {
-	Address []string `json:"address"`
+	Address []string `json:"address" validate:"required"`
 }
 
 type MasterChainInfoStruct struct {
