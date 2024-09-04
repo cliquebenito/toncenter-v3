@@ -23,3 +23,35 @@ func SetParams(req BlocksStructParams) url.Values {
 	}
 	return queryParams
 }
+func SetParamsTx(req TransactionsParams) url.Values {
+	queryParams := url.Values{}
+	var account, exclude_account string
+	for _, v := range req.Account {
+		account += v
+	}
+	for _, v := range req.ExcludeAccount {
+		exclude_account += v
+	}
+	params := map[string]string{
+		"workchain":       req.WorkChain,
+		"shard":           req.Shard,
+		"seqno":           req.Seqno,
+		"account":         account,
+		"exclude_account": exclude_account,
+		"hash":            req.Hash,
+		"lt":              req.Lt,
+		"start_utime":     req.StartUtime,
+		"end_utime":       req.EndUtime,
+		"start_lt":        req.StartLt,
+		"end_lt":          req.EndLt,
+		"limit":           req.Limit,
+		"offset":          req.Offset,
+		"sort":            req.Sort,
+	}
+	for key, value := range params {
+		if value != "" {
+			queryParams.Set(key, value)
+		}
+	}
+	return queryParams
+}

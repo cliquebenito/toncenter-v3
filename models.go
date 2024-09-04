@@ -5,6 +5,89 @@ type AddressBookStruct struct {
 }
 type AddressBookResponse map[string]AddressBookStruct
 
+//	type TxLastRest struct {
+//		AddressBookResponse `json:"address_book"`
+//	}
+type TransactionStruct struct {
+	Transactions []struct {
+		Account       string `json:"account"`
+		Hash          string `json:"hash"`
+		Lt            string `json:"lt"`
+		Now           int    `json:"now"`
+		McBlockSeqno  int    `json:"mc_block_seqno"`
+		TraceID       string `json:"trace_id"`
+		PrevTransHash string `json:"prev_trans_hash"`
+		PrevTransLt   string `json:"prev_trans_lt"`
+		OrigStatus    string `json:"orig_status"`
+		EndStatus     string `json:"end_status"`
+		TotalFees     string `json:"total_fees"`
+		Description   struct {
+			Type      string `json:"type"`
+			Aborted   bool   `json:"aborted"`
+			Destroyed bool   `json:"destroyed"`
+			IsTock    bool   `json:"is_tock"`
+			StoragePh struct {
+				StorageFeesCollected string `json:"storage_fees_collected"`
+				StatusChange         string `json:"status_change"`
+			} `json:"storage_ph"`
+			ComputePh struct {
+				Skipped          bool   `json:"skipped"`
+				Success          bool   `json:"success"`
+				MsgStateUsed     bool   `json:"msg_state_used"`
+				AccountActivated bool   `json:"account_activated"`
+				GasFees          string `json:"gas_fees"`
+				GasUsed          string `json:"gas_used"`
+				GasLimit         string `json:"gas_limit"`
+				Mode             int    `json:"mode"`
+				ExitCode         int    `json:"exit_code"`
+				VMSteps          int    `json:"vm_steps"`
+				VMInitStateHash  string `json:"vm_init_state_hash"`
+				VMFinalStateHash string `json:"vm_final_state_hash"`
+			} `json:"compute_ph"`
+			Action struct {
+				Success        bool   `json:"success"`
+				Valid          bool   `json:"valid"`
+				NoFunds        bool   `json:"no_funds"`
+				StatusChange   string `json:"status_change"`
+				ResultCode     int    `json:"result_code"`
+				TotActions     int    `json:"tot_actions"`
+				SpecActions    int    `json:"spec_actions"`
+				SkippedActions int    `json:"skipped_actions"`
+				MsgsCreated    int    `json:"msgs_created"`
+				ActionListHash string `json:"action_list_hash"`
+				TotMsgSize     struct {
+					Cells string `json:"cells"`
+					Bits  string `json:"bits"`
+				} `json:"tot_msg_size"`
+			} `json:"action"`
+		} `json:"description"`
+		BlockRef struct {
+			Workchain int    `json:"workchain"`
+			Shard     string `json:"shard"`
+			Seqno     int    `json:"seqno"`
+		} `json:"block_ref"`
+		InMsg              interface{}   `json:"in_msg"`
+		OutMsgs            []interface{} `json:"out_msgs"`
+		AccountStateBefore struct {
+			Hash          string      `json:"hash"`
+			Balance       string      `json:"balance"`
+			AccountStatus string      `json:"account_status"`
+			FrozenHash    interface{} `json:"frozen_hash"`
+			DataHash      string      `json:"data_hash"`
+			CodeHash      string      `json:"code_hash"`
+		} `json:"account_state_before"`
+		AccountStateAfter struct {
+			Hash          string      `json:"hash"`
+			Balance       string      `json:"balance"`
+			AccountStatus string      `json:"account_status"`
+			FrozenHash    interface{} `json:"frozen_hash"`
+			DataHash      string      `json:"data_hash"`
+			CodeHash      string      `json:"code_hash"`
+		} `json:"account_state_after"`
+	} `json:"transactions"`
+	AddressBookResponse `json:"address_book"`
+}
+
 type MasterChainBlockShardsStruct struct {
 	Blocks []struct {
 		Workchain              int    `json:"workchain"`
@@ -142,6 +225,23 @@ type BlocksStructParams struct {
 	Offset     string `json:"offset"`
 	Sort       string `json:"sort"`
 }
+type TransactionsParams struct {
+	WorkChain      string   `json:"workchain"`
+	Shard          string   `json:"shard"`
+	Seqno          string   `json:"seqno"`
+	Account        []string `json:"account"`
+	ExcludeAccount []string `json:"exclude_account"`
+	Hash           string   `json:"hash"`
+	Lt             string   `json:"lt"`
+	StartUtime     string   `json:"start_utime"`
+	EndUtime       string   `json:"end_utime"`
+	StartLt        string   `json:"start_lt"`
+	EndLt          string   `json:"end_lt"`
+	Limit          string   `json:"limit"`
+	Offset         string   `json:"offset"`
+	Sort           string   `json:"sort"`
+}
+
 type MasterChainBlockShardStateStruct struct {
 	Blocks []struct {
 		Workchain              int    `json:"workchain"`
