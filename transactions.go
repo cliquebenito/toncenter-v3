@@ -6,6 +6,7 @@ import (
 
 type Transactioner interface {
 	Transactions(params TransactionsParams) (TransactionStruct, error)
+	TransactionByMasterchainBlock(params TransactionByMasterchainBlockParams) (TransactionByMasterChainBlockStruct, error)
 }
 type Transaction struct {
 	client Client
